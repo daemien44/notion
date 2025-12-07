@@ -1,13 +1,28 @@
 // --- CONFIG ---
-const KEY_GOAL = 'blob_goal';
-const KEY_STREAK = 'blob_streak';
+const KEY_GOAL = 'bunny_demo_goal';
+const KEY_STREAK = 'bunny_demo_streak';
 
-const PHRASES = {
-    start: ["I am formless.", "Give me shape.", "Feed me streaks.", "Waiting..."],
-    low: ["I'm getting blue.", "Okay, not bad.", "More please.", "I feel a tingle."],
-    mid: ["I AM PINK NOW.", "Look at me glow.", "We are unstoppable.", "So squishy!"],
-    high: ["GOLDEN GOD.", "ASCENDED.", "PURE ENERGY.", "BOW BEFORE ME."],
-    broken: ["I melted.", "Back to puddle.", "Whyyyy.", "Sad blob sounds."]
+const TEXTS = {
+    start: [
+        "I'm listening...", "Hop to it.", "Don't make me wait.", 
+        "My ears are up.", "I'm watching you."
+    ],
+    low: [
+        "That's it?", "I've seen better hops.", "Barely trying.", 
+        "One day? Cute.", "Yawn."
+    ],
+    mid: [
+        "Not bad, human.", "Twitching with approval.", 
+        "Okay, I'm listening.", "Don't drop the carrot.", "Acceptable."
+    ],
+    high: [
+        "A M A Z I N G.", "I am your biggest fan.", "Bunny approved!", 
+        "Pure dedication.", "Legendary status."
+    ],
+    broken: [
+        "MY HEART IS BROKEN.", "Back to the burrow.", "Why did you stop?", 
+        "Disappointed.", "Back to zero. Sad."
+    ]
 };
 
 // DOM
@@ -16,9 +31,8 @@ const activeLayer = document.getElementById('active-layer');
 const goalInput = document.getElementById('goal-input');
 const displayGoal = document.getElementById('display-goal');
 const streakEl = document.getElementById('streak-num');
-const textEl = document.getElementById('blob-text');
-const blob = document.getElementById('the-blob');
-const wrapper = document.querySelector('.blob-wrapper');
+const textEl = document.getElementById('roast-text');
+const rig = document.getElementById('bunny-rig');
 
 // STATE
 let goalName = localStorage.getItem(KEY_GOAL) || "";
@@ -50,13 +64,23 @@ function saveGoal() {
 }
 
 function checkIn() {
-    streak++; // Demo mode: No date check, infinite clicking
+    streak++;
+    // In Demo mode, we save streak but don't care about dates
     localStorage.setItem(KEY_STREAK, streak);
 
-    // Animation
-    wrapper.classList.remove('anim-bounce', 'anim-shake');
-    void wrapper.offsetWidth; // Reflow
-    wrapper.classList.add('anim-bounce');
+    // Random Animation
+    const animations = ['anim-flip', 'anim-pop', 'anim-wiggle'];
+    const randAnim = animations[Math.floor(Math.random() * animations.length)];
+    
+    // Reset animations
+    rig.classList.remove('anim-flip', 'anim-pop', 'anim-wiggle', 'anim-shake');
+    void rig.offsetWidth; // Force Reflow
+    rig.classList.add(randAnim);
+
+    // Bounce Counter
+    streakEl.classList.remove('bounce');
+    void streakEl.offsetWidth;
+    streakEl.classList.add('bounce');
 
     updateUI(true);
 }
@@ -65,52 +89,55 @@ function breakStreak() {
     streak = 0;
     localStorage.setItem(KEY_STREAK, streak);
     
-    // Animation
-    wrapper.classList.remove('anim-bounce', 'anim-shake');
-    void wrapper.offsetWidth;
-    wrapper.classList.add('anim-shake');
+    // Angry Shake
+    rig.classList.remove('anim-flip', 'anim-pop', 'anim-wiggle', 'anim-shake');
+    void rig.offsetWidth;
+    rig.classList.add('anim-shake');
     
-    updateUI(false, true); // Trigger sad state
+    updateUI(false, true);
 }
 
 function updateUI(isCheckIn, isBroken = false) {
     streakEl.innerText = streak;
 
-    // Mood Logic
-    let moodClass = "mood-neutral";
-    let texts = PHRASES.start;
+    let mood = "mood-bored";
+    let texts = TEXTS.start;
 
     if (isBroken) {
-        moodClass = "mood-sad";
-        texts = PHRASES.broken;
+        mood = "mood-angry";
+        texts = TEXTS.broken;
     } else if (streak >= 15) {
-        moodClass = "mood-gold";
-        texts = PHRASES.high;
+        mood = "mood-love";
+        texts = TEXTS.high;
+    } else if (streak >= 10) {
+        mood = "mood-happy";
+        texts = TEXTS.high;
     } else if (streak >= 5) {
-        moodClass = "mood-happy"; // Pink
-        texts = PHRASES.mid;
-    } else if (streak >= 1) {
-        moodClass = "mood-sus"; // Blue
-        texts = PHRASES.low;
+        mood = "mood-happy";
+        texts = TEXTS.mid;
+    } else if (streak >= 2) {
+        mood = "mood-sus";
+        texts = TEXTS.low;
     } else {
-        moodClass = "mood-neutral";
-        texts = PHRASES.start;
+        mood = "mood-bored";
+        texts = TEXTS.start;
     }
 
-    // Apply Mood
-    blob.className = "blob " + moodClass;
+    rig.className = "bunny-wrapper " + mood;
 
-    // Update Text
+    // Preserve animation class if it's currently running (simple hack for demo)
+    // In a real app we'd manage classes more strictly, but this works for the demo feel.
+
     if (isCheckIn || isBroken || streak > 0) {
         const rand = Math.floor(Math.random() * texts.length);
         textEl.innerText = texts[rand];
     } else {
-         textEl.innerText = PHRASES.start[0];
+         textEl.innerText = TEXTS.start[0];
     }
 }
 
 function resetAll() {
-    if(confirm("Delete goal and reset?")) {
+    if(confirm("Reset entire widget?")) {
         localStorage.clear();
         location.reload();
     }

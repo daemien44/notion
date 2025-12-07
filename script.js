@@ -65,16 +65,14 @@ function saveGoal() {
 
 function checkIn() {
     streak++;
-    // In Demo mode, we save streak but don't care about dates
     localStorage.setItem(KEY_STREAK, streak);
 
-    // Random Animation
+    // Animation
     const animations = ['anim-flip', 'anim-pop', 'anim-wiggle'];
     const randAnim = animations[Math.floor(Math.random() * animations.length)];
     
-    // Reset animations
     rig.classList.remove('anim-flip', 'anim-pop', 'anim-wiggle', 'anim-shake');
-    void rig.offsetWidth; // Force Reflow
+    void rig.offsetWidth; 
     rig.classList.add(randAnim);
 
     // Bounce Counter
@@ -125,9 +123,6 @@ function updateUI(isCheckIn, isBroken = false) {
 
     rig.className = "bunny-wrapper " + mood;
 
-    // Preserve animation class if it's currently running (simple hack for demo)
-    // In a real app we'd manage classes more strictly, but this works for the demo feel.
-
     if (isCheckIn || isBroken || streak > 0) {
         const rand = Math.floor(Math.random() * texts.length);
         textEl.innerText = texts[rand];
@@ -142,4 +137,3 @@ function resetAll() {
         location.reload();
     }
 }
-

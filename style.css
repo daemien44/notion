@@ -206,3 +206,4 @@ input:focus { outline: none; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); }
 
 .anim-shake { animation: shake 0.4s ease-in-out; }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+

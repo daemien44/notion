@@ -1,106 +1,105 @@
 // --- CONFIGURATION ---
-const STORAGE_KEY_STREAK = 'judgy_cat_streak';
-const STORAGE_KEY_DATE = 'judgy_cat_last_checkin';
+const KEY_GOAL = 'judgy_cat_goal_name';
+const KEY_STREAK = 'judgy_cat_streak_count';
 
-// Roasts & Compliments
 const TEXTS = {
-    start: ["My expectations are low.", "Prove me wrong.", "Don't disappoint me.", "Here we go..."],
-    streak_low: ["Is that it?", "Do better.", "Yawn.", "Barely trying."],
-    streak_mid: ["Okay, not bad.", "I'm watching you.", "Don't get cocky.", "Acceptable."],
-    streak_high: ["Actually impressive.", "You're glowing.", "I approve.", "Masterful."],
-    broken: ["YOU ABANDONED ME.", "Back to zero.", "I knew you'd fail.", "Disappointing."]
+    start: ["My expectations are low.", "Prove me wrong.", "Don't disappoint me."],
+    low: ["Is that it?", "Do better.", "Yawn.", "One. Cute."],
+    mid: ["Okay, not bad.", "I'm watching you.", "Acceptable.", "Don't stop now."],
+    high: ["Actually impressive.", "You're glowing.", "I approve.", "Who are you?"],
 };
 
 // --- DOM ELEMENTS ---
+const setupLayer = document.getElementById('setup-layer');
+const activeLayer = document.getElementById('active-layer');
+const goalInput = document.getElementById('goal-input');
+const displayGoal = document.getElementById('display-goal');
+
 const streakEl = document.getElementById('streak-num');
 const textEl = document.getElementById('roast-text');
-const btn = document.getElementById('checkin-btn');
 const cat = document.getElementById('cat-face');
 
+// --- STATE ---
+let goalName = localStorage.getItem(KEY_GOAL) || "";
+let streak = parseInt(localStorage.getItem(KEY_STREAK) || "0");
+
 // --- INITIALIZATION ---
-// 1. Load data from local storage
-let currentStreak = parseInt(localStorage.getItem(STORAGE_KEY_STREAK) || '0');
-let lastCheckInDate = localStorage.getItem(STORAGE_KEY_DATE);
-
-// 2. Check logic on page load
-checkStreakStatus();
-updateUI(false); // false means "don't play check-in animation"
-
-// --- MAIN FUNCTIONS ---
-
-function checkStreakStatus() {
-    if (!lastCheckInDate) return; // First time user
-
-    const today = new Date().setHours(0,0,0,0); // Midnight today
-    const last = new Date(lastCheckInDate).setHours(0,0,0,0); // Midnight of last checkin
-    
-    // Difference in days (milliseconds / 1000ms / 60s / 60m / 24h)
-    const diffDays = (today - last) / (1000 * 60 * 60 * 24);
-
-    if (diffDays === 0) {
-        // Already checked in today
-        btn.disabled = true;
-        btn.innerText = "DONE FOR TODAY";
-    } else if (diffDays > 1) {
-        // Missed a day! Streak broken.
-        currentStreak = 0;
-        localStorage.setItem(STORAGE_KEY_STREAK, '0');
-        // Trigger angry mood immediately
-        cat.className = "cat-head mood-angry";
-        textEl.innerText = TEXTS.broken[Math.floor(Math.random() * TEXTS.broken.length)];
-    }
-    // If diffDays === 1, standard new day, waiting for check-in.
+if (goalName) {
+    showActiveLayer();
+} else {
+    showSetupLayer();
 }
 
-// Button Click Event
-btn.addEventListener('click', () => {
-    // 1. Increment Streak
-    currentStreak++;
-    
-    // 2. Save Data
-    const now = new Date();
-    localStorage.setItem(STORAGE_KEY_STREAK, currentStreak);
-    localStorage.setItem(STORAGE_KEY_DATE, now.toISOString());
+// --- FUNCTIONS ---
 
-    // 3. Update UI
-    btn.disabled = true;
-    btn.innerText = "DONE FOR TODAY";
+function showSetupLayer() {
+    setupLayer.classList.remove('hidden');
+    activeLayer.classList.add('hidden');
+}
+
+function showActiveLayer() {
+    setupLayer.classList.add('hidden');
+    activeLayer.classList.remove('hidden');
+    displayGoal.innerText = goalName;
+    updateUI(false);
+}
+
+function saveGoal() {
+    const val = goalInput.value.trim();
+    if (!val) return alert("Enter a goal!");
     
-    // Play Bounce Animation
+    goalName = val;
+    localStorage.setItem(KEY_GOAL, goalName);
+    showActiveLayer();
+}
+
+function checkIn() {
+    // 1. Increment Streak (Unlimited for Demo)
+    streak++;
+    localStorage.setItem(KEY_STREAK, streak);
+
+    // 2. Animate Number
     streakEl.classList.remove('bounce');
     void streakEl.offsetWidth; // Trigger reflow
     streakEl.classList.add('bounce');
 
-    updateUI(true); // true = just checked in
-});
+    // 3. Update Cat and Text
+    updateUI(true);
+}
 
-function updateUI(justCheckedIn) {
-    streakEl.innerText = currentStreak;
+function updateUI(isCheckIn) {
+    streakEl.innerText = streak;
 
-    // Determine Mood & Text based on Streak
+    // Determine Mood
     let mood = "mood-bored";
-    let textOptions = TEXTS.start;
+    let texts = TEXTS.start;
 
-    if (currentStreak === 0) {
-        mood = "mood-bored"; // or angry if broken, handled in checkStreakStatus
-        textOptions = TEXTS.start;
-    } else if (currentStreak >= 10) {
+    if (streak === 0) {
+        mood = "mood-bored";
+        texts = TEXTS.start;
+    } else if (streak >= 10) {
         mood = "mood-happy";
-        textOptions = TEXTS.streak_high;
-    } else if (currentStreak >= 3) {
+        texts = TEXTS.high;
+    } else if (streak >= 3) {
         mood = "mood-sus";
-        textOptions = TEXTS.streak_mid;
+        texts = TEXTS.mid;
     } else {
         mood = "mood-bored";
-        textOptions = TEXTS.streak_low;
+        texts = TEXTS.low;
     }
 
-    // Only update mood/text if we just checked in or if it's a standard load
-    // (We don't want to overwrite the "Angry" state if the streak was just broken on load)
-    if (justCheckedIn || (currentStreak > 0)) {
-        cat.className = "cat-head " + mood;
-        const rand = Math.floor(Math.random() * textOptions.length);
-        textEl.innerText = textOptions[rand];
+    cat.className = "cat-head " + mood;
+
+    // Change text if checking in or if text is currently default
+    if (isCheckIn || streak > 0) {
+        const rand = Math.floor(Math.random() * texts.length);
+        textEl.innerText = texts[rand];
     }
 }
 
+function resetAll() {
+    if(confirm("Reset everything?")) {
+        localStorage.clear();
+        location.reload();
+    }
+}

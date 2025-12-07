@@ -3,42 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day Night Switch</title>
+    <title>Judgemental Streak Cat</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <input id="switch" type="checkbox">
-    <div class="app">
-        <div class="body">
-            <div class="phone">
-                <div class="menu">
-                    <div class="time">4:20</div>
-                    <div class="icons">
-                        <div class="network"></div>
-                        <div class="battery"></div>
-                    </div>
-                </div>
-
-                <div class="content">
-                    <div class="circle">
-                        <div class="crescent"></div>
-                    </div>
-
-                    <label for="switch">
-                        <div class="toggle"></div>
-                        <div class="names">
-                            <p class="light">Light</p>
-                            <p class="dark">Dark</p>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-
-            
-            
+    <div id="widget">
+        
+        <div class="speech-bubble" id="roast-text">
+            I'm watching you.
         </div>
+
+        <div class="cat-stage">
+            <div class="ear left"></div>
+            <div class="ear right"></div>
+            <div class="cat-head mood-bored" id="cat-face">
+                <div class="eyes">
+                    <div class="eye left"><div class="eyelid"></div></div>
+                    <div class="eye right"><div class="eyelid"></div></div>
+                </div>
+                <div class="nose"></div>
+                <div class="mouth"></div>
+            </div>
+        </div>
+
+        <div class="streak-container">
+            <div class="streak-num" id="streak-num">0</div>
+            <div class="streak-label">DAY STREAK</div>
+        </div>
+
+        <button class="btn-main" id="checkin-btn">I DID IT!</button>
+
     </div>
-    </body>
+
+    <script src="script.js"></script>
+
+</body>
 </html>

@@ -1,7 +1,19 @@
+/* --- NOTION CENTERING (I added this for you) --- */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    /* This makes the background transparent so it blends with Notion */
+    background-color: transparent; 
+    font-family: sans-serif;
+    overflow: hidden; /* Prevents scrollbars */
+}
+
+/* --- YOUR WIDGET CODE BELOW --- */
 
 /* From Uiverse.io by Pradeepsaranbishnoi */ 
-/* GENERAL */
-
 .credit {
   position: fixed;
   right: 2rem;
@@ -46,11 +58,8 @@
   flex-direction: column;
 }
 
-
-
 /* Top */
 .menu {
-/*   background-color: blue; */
   font-size: 80%;
   opacity: .4;
   padding: .8rem 1.8rem;
@@ -253,21 +262,4 @@ label {
 
 [type="checkbox"]:checked + .app .body {
   border-radius: 40px;
-  ;
-}
-
-.menu {
-/*   background-color: blue; */
-  font-size: 80%;
-  opacity: .4;
-  padding: .8rem 1.8rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }

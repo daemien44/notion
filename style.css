@@ -234,3 +234,5 @@ input:focus { outline: none; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); }
 
 .bounce { animation: bounce 0.4s ease; }
 @keyframes bounce { 50% { transform: scale(1.2); } }
+
+

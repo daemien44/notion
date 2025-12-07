@@ -67,12 +67,13 @@ function checkIn() {
     streak++;
     localStorage.setItem(KEY_STREAK, streak);
 
-    // Animation
+    // Random Animation
     const animations = ['anim-flip', 'anim-pop', 'anim-wiggle'];
     const randAnim = animations[Math.floor(Math.random() * animations.length)];
     
+    // Reset animations
     rig.classList.remove('anim-flip', 'anim-pop', 'anim-wiggle', 'anim-shake');
-    void rig.offsetWidth; 
+    void rig.offsetWidth; // Force Reflow
     rig.classList.add(randAnim);
 
     // Bounce Counter
@@ -93,6 +94,25 @@ function breakStreak() {
     rig.classList.add('anim-shake');
     
     updateUI(false, true);
+}
+
+function fullReset() {
+    // 1. Clear Data
+    localStorage.removeItem(KEY_GOAL);
+    localStorage.removeItem(KEY_STREAK);
+    
+    // 2. Reset State
+    streak = 0;
+    goalName = "";
+    
+    // 3. Reset UI
+    streakEl.innerText = 0;
+    goalInput.value = "";
+    rig.className = "bunny-wrapper mood-bored";
+    textEl.innerText = TEXTS.start[0];
+    
+    // 4. Swap Layers
+    showSetupLayer();
 }
 
 function updateUI(isCheckIn, isBroken = false) {
@@ -128,12 +148,5 @@ function updateUI(isCheckIn, isBroken = false) {
         textEl.innerText = texts[rand];
     } else {
          textEl.innerText = TEXTS.start[0];
-    }
-}
-
-function resetAll() {
-    if(confirm("Reset entire widget?")) {
-        localStorage.clear();
-        location.reload();
     }
 }

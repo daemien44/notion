@@ -3,55 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sassy Streak Blob</title>
+    <title>Judgemental Streak Bunny (Demo)</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="widget">
         
         <div id="setup-layer">
-            <h2 class="title">Name your Habit</h2>
-            <input type="text" id="goal-input" placeholder="e.g. 50 Pushups" maxlength="18">
-            <button class="btn-main" onclick="saveGoal()">CREATE BLOB</button>
+            <h2 class="setup-title">Track a Habit</h2>
+            <div class="input-wrapper">
+                <input type="text" id="goal-input" placeholder="e.g. Read 10 Pages" maxlength="20">
+            </div>
+            <button class="btn-main" onclick="saveGoal()">START DEMO</button>
         </div>
 
         <div id="active-layer" class="hidden">
             
             <div class="header">
                 <span id="display-goal">GOAL</span>
-                <button class="btn-reset" onclick="resetAll()">RESET</button>
+                <span class="reset-link" onclick="resetAll()">RESET</span>
             </div>
 
-            <div class="speech-bubble" id="blob-text">
-                Feed me streaks.
+            <div class="speech-bubble" id="roast-text">
+                I'm listening...
             </div>
 
             <div class="stage">
-                <div class="blob-wrapper">
-                    <div class="blob mood-neutral" id="the-blob"></div>
-                    <div class="face">
+                <div class="bunny-wrapper mood-bored" id="bunny-rig">
+                    
+                    <div class="ears-container">
+                        <div class="ear left"></div>
+                        <div class="ear right"></div>
+                    </div>
+
+                    <div class="head-face">
                         <div class="eyes">
-                            <div class="eye left"></div>
-                            <div class="eye right"></div>
+                            <div class="eye left"><div class="eyelid"></div></div>
+                            <div class="eye right"><div class="eyelid"></div></div>
+                        </div>
+                        <div class="nose"></div>
+                        <div class="whiskers">
+                            <div class="whisker w-left"></div>
+                            <div class="whisker w-right"></div>
                         </div>
                         <div class="mouth"></div>
-                        <div class="blush"></div>
+                        <div class="teeth"></div>
                     </div>
+
                 </div>
             </div>
 
-            <div class="counter-box">
-                <div id="streak-num" class="num">0</div>
-                <div class="label">DAY STREAK</div>
+            <div class="streak-container">
+                <div class="streak-num" id="streak-num">0</div>
+                <div class="streak-label">DAY STREAK</div>
             </div>
 
             <div class="controls">
                 <button class="btn-main" id="checkin-btn" onclick="checkIn()">I DID IT!</button>
                 <button class="btn-break" onclick="breakStreak()">X BREAK STREAK</button>
             </div>
-
         </div>
 
     </div>
@@ -60,5 +72,3 @@
 
 </body>
 </html>
-
-

@@ -2,8 +2,8 @@
     --bg-color: #FDF6E3; /* Cream background */
     --card-bg: #FFFFFF;
     --text-color: #2C3E50;
-    --cat-color: #95A5A6; /* Grey Cat */
-    --accent-color: #FFD93D; /* Yellow Button */
+    --cat-color: #95A5A6; 
+    --accent-color: #FFD93D; /* Yellow */
     --shadow-color: #000000;
 }
 
@@ -13,15 +13,15 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: transparent; /* Transparent for Notion */
+    background-color: transparent; 
     font-family: 'Nunito', sans-serif;
     color: var(--text-color);
     user-select: none;
 }
 
 #widget {
-    width: 260px;
-    background: var(--card-bg);
+    width: 280px;
+    background: var(--bg-color); /* Forced cream background for readability */
     border: 3px solid var(--shadow-color);
     border-radius: 20px;
     padding: 24px;
@@ -31,14 +31,61 @@ body {
     align-items: center;
     gap: 16px;
     position: relative;
+    box-sizing: border-box;
 }
 
-/* --- CAT CSS ART --- */
+.hidden { display: none !important; }
+
+/* --- SETUP LAYER --- */
+#setup-layer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+
+.setup-title { margin: 0; font-family: 'Fredoka One', cursive; font-size: 20px; }
+.setup-sub { margin: 0; font-size: 14px; color: #7f8c8d; }
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 3px solid var(--shadow-color);
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    box-sizing: border-box; /* Fixes padding issues */
+    text-align: center;
+}
+input:focus { outline: none; background: #fff; }
+
+/* --- ACTIVE LAYER --- */
+#active-layer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.goal-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed #ccc;
+    padding-bottom: 5px;
+}
+
+#display-goal { font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+.btn-reset { background: none; border: none; font-size: 10px; text-decoration: underline; cursor: pointer; color: #e74c3c; font-weight: bold; }
+
+/* --- CAT ART --- */
 .cat-stage {
-    width: 120px;
-    height: 100px;
-    position: relative;
-    margin-top: 10px;
+    width: 120px; height: 100px;
+    position: relative; margin-top: 10px;
 }
 
 .cat-head {
@@ -55,68 +102,70 @@ body {
     width: 30px; height: 40px;
     background: var(--cat-color);
     border: 3px solid var(--shadow-color);
-    position: absolute; top: -15px;
-    z-index: 1;
+    position: absolute; top: -15px; z-index: 1;
 }
 .ear.left { left: 15px; border-radius: 10px 0 0 0; transform: rotate(-10deg); }
 .ear.right { right: 15px; border-radius: 0 10px 0 0; transform: rotate(10deg); }
 
-.eyes {
-    position: absolute; top: 35px; left: 50%; transform: translateX(-50%);
-    width: 60px; height: 20px;
-    display: flex; justify-content: space-between;
-}
+.eyes { position: absolute; top: 35px; left: 50%; transform: translateX(-50%); width: 60px; height: 20px; display: flex; justify-content: space-between; }
+.eye { width: 12px; height: 12px; background: var(--shadow-color); border-radius: 50%; position: relative; overflow: hidden; transition: all 0.3s; }
+.eyelid { position: absolute; top: -5px; left: -2px; width: 16px; height: 16px; background: var(--cat-color); transition: transform 0.3s; transform-origin: top; transform: scaleY(0); }
 
-.eye {
-    width: 12px; height: 12px;
-    background: var(--shadow-color); border-radius: 50%;
-    position: relative; overflow: hidden;
-    transition: all 0.3s;
-}
+.nose { width: 8px; height: 6px; background: pink; border-radius: 50%; position: absolute; top: 55px; left: 46px; }
+.mouth { width: 20px; height: 10px; border-bottom: 2px solid var(--shadow-color); border-radius: 50%; position: absolute; top: 60px; left: 40px; transition: all 0.3s; }
 
-.eyelid {
-    position: absolute; top: -5px; left: -2px;
-    width: 16px; height: 16px;
-    background: var(--cat-color);
-    transition: transform 0.3s;
-    transform-origin: top;
-    transform: scaleY(0); /* Open by default */
-}
-
-.nose {
-    width: 8px; height: 6px; background: pink;
-    border-radius: 50%;
-    position: absolute; top: 55px; left: 46px;
-}
-
-.mouth {
-    width: 20px; height: 10px;
-    border-bottom: 2px solid var(--shadow-color);
-    border-radius: 50%;
-    position: absolute; top: 60px; left: 40px;
-    transition: all 0.3s;
-}
-
-/* --- MOODS --- */
-/* Bored */
+/* MOODS */
 .mood-bored .eyelid { transform: scaleY(0.65); }
 .mood-bored .mouth { width: 10px; height: 2px; border: none; background: #000; top: 65px; left: 45px; }
 
-/* Suspicious (One eyebrow raised) */
 .mood-sus .eye.left .eyelid { transform: scaleY(0.2); } 
 .mood-sus .eye.right .eyelid { transform: scaleY(0); }
 .mood-sus .mouth { width: 12px; height: 2px; border: none; background: #000; transform: rotate(-10deg); top: 64px;}
 
-/* Happy */
 .mood-happy .eye { height: 14px; width: 14px; }
 .mood-happy .mouth { border-bottom: 4px solid #000; height: 12px; width: 24px; left: 38px; }
 
-/* Angry (Broken Streak) */
-.mood-angry .eye { height: 4px; width: 15px; border-radius: 0; transform: rotate(20deg); }
-.mood-angry .eye.right { transform: rotate(-20deg); }
-.mood-angry .mouth { width: 16px; height: 8px; background: #000; border-radius: 10px 10px 0 0; top: 64px; left: 42px;}
-
-/* --- TEXT & UI --- */
+/* --- UI ELEMENTS --- */
 .speech-bubble {
     background: var(--shadow-color);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+    min-height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+.speech-bubble::after {
+    content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+    border-width: 8px 8px 0; border-style: solid; border-color: var(--shadow-color) transparent;
+}
 
+.streak-container { text-align: center; }
+.streak-num { font-family: 'Fredoka One', cursive; font-size: 48px; line-height: 1; }
+.streak-label { font-size: 12px; font-weight: 800; color: #95A5A6; letter-spacing: 1px; }
+
+/* --- MAIN BUTTON --- */
+.btn-main {
+    width: 100%;
+    background: var(--accent-color);
+    color: var(--text-color);
+    border: 3px solid var(--shadow-color);
+    border-radius: 12px;
+    padding: 12px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--shadow-color);
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-sizing: border-box;
+}
+.btn-main:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--shadow-color); }
+
+/* Animation Classes */
+.bounce { animation: bounce 0.4s ease; }
+@keyframes bounce { 50% { transform: scale(1.2); } }

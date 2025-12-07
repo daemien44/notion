@@ -1,15 +1,18 @@
 :root {
-    /* The "Liked" Color Scheme */
-    --bg-color: #FDF6E3;   /* Cream */
-    --card-bg: #FFFFFF;    /* White */
-    --text-color: #2C3E50; /* Dark Blue-Grey */
-    --outline: #1a1a1a;    /* Nearly Black */
+    --bg: #FDF6E3;      /* Cream */
+    --card: #FFFFFF;
+    --text: #2C3E50;
+    --outline: #1a1a1a; /* Hard Black Outline */
     
-    --bunny-fur: #f3f4f6;  /* Soft White/Grey */
-    --ear-pink: #FFC1CC;   /* Pastel Pink */
-    
-    --btn-primary: #FFD93D; /* Pop Yellow */
-    --btn-break: #FF6B6B;   /* Soft Red */
+    /* Blob Colors */
+    --blob-grey: #CFD8DC;
+    --blob-blue: #4FC3F7;
+    --blob-pink: #F48FB1;
+    --blob-gold: #FFD54F;
+    --blob-sad: #90A4AE;
+
+    --btn-pop: #FFD93D;
+    --btn-danger: #FF6B6B;
 }
 
 body {
@@ -18,19 +21,19 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: transparent; 
+    background-color: transparent;
     font-family: 'Nunito', sans-serif;
-    color: var(--text-color);
     user-select: none;
+    color: var(--text);
 }
 
 #widget {
     width: 260px;
-    background: var(--bg-color);
+    background: var(--bg);
     border: 3px solid var(--outline);
     border-radius: 24px;
     padding: 24px;
-    box-shadow: 8px 8px 0 var(--outline); /* The Hard Shadow */
+    box-shadow: 8px 8px 0 var(--outline);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,118 +44,35 @@ body {
 
 .hidden { display: none !important; }
 
-/* --- SETUP LAYER --- */
-#setup-layer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-    padding: 20px 0;
-}
-.setup-title { margin: 0; font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--text-color); }
+/* --- SETUP --- */
+#setup-layer { width: 100%; text-align: center; display: flex; flex-direction: column; gap: 12px; padding: 20px 0; }
+.title { font-family: 'Fredoka One', cursive; margin: 0; font-size: 24px; }
 
 input[type="text"] {
     width: 100%; padding: 14px;
     border: 3px solid var(--outline); border-radius: 12px;
-    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 16px;
+    font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 16px;
     text-align: center; box-sizing: border-box;
-    background: #fff;
-    color: var(--text-color);
+    background: #fff; color: var(--text);
 }
 input:focus { outline: none; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); }
 
-/* --- ACTIVE LAYER --- */
+/* --- ACTIVE UI --- */
 #active-layer { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
-.goal-header {
+.header {
     width: 100%; display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 2px dashed #bdc3c7; padding-bottom: 8px; margin-bottom: 4px;
+    border-bottom: 3px dashed #dcdcdc; padding-bottom: 8px;
 }
-#display-goal { font-weight: 900; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; color: #7f8c8d; }
-.btn-reset { background: none; border: none; font-size: 11px; text-decoration: underline; cursor: pointer; color: var(--btn-break); font-weight: 800; }
+#display-goal { font-weight: 900; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; color: #95a5a6; }
+.btn-reset { background: none; border: none; font-size: 11px; text-decoration: underline; cursor: pointer; color: var(--btn-danger); font-weight: 900; }
 
-/* --- BUNNY ART (Polished) --- */
-.stage {
-    width: 140px; height: 110px;
-    position: relative; margin-top: 15px;
-}
-
-.head {
-    width: 100px; height: 85px;
-    background: var(--bunny-fur);
-    border: 3px solid var(--outline);
-    border-radius: 50% 50% 45% 45%;
-    position: absolute; bottom: 0; left: 20px;
-    z-index: 10;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Ears - Smoother shape */
-.ear {
-    width: 28px; height: 65px;
-    background: var(--bunny-fur);
-    border: 3px solid var(--outline);
-    border-radius: 50% 50% 0 0; /* Rounded tips */
-    position: absolute; top: -45px; z-index: 1;
-}
-.ear::after {
-    content: ''; position: absolute; top: 10px; left: 6px;
-    width: 10px; height: 40px; background: var(--ear-pink);
-    border-radius: 50% 50% 0 0; opacity: 1;
-}
-.ear.left { left: 22px; transform: rotate(-10deg); transform-origin: bottom; }
-.ear.right { right: 22px; transform: rotate(10deg); transform-origin: bottom; }
-
-/* Face Details */
-.eyes { position: absolute; top: 35px; left: 50%; transform: translateX(-50%); width: 55px; height: 20px; display: flex; justify-content: space-between; }
-.eye { width: 10px; height: 10px; background: var(--outline); border-radius: 50%; position: relative; overflow: hidden; transition: all 0.3s; }
-.eyelid { position: absolute; top: -4px; left: -2px; width: 16px; height: 16px; background: var(--bunny-fur); transition: transform 0.3s; transform-origin: top; transform: scaleY(0); }
-
-.nose { width: 10px; height: 8px; background: var(--ear-pink); border-radius: 50%; position: absolute; top: 52px; left: 42px; }
-
-/* Whiskers */
-.whiskers { position: absolute; top: 55px; width: 100%; pointer-events: none; }
-.whisker { width: 25px; height: 2px; background: #bdc3c7; position: absolute; }
-.w-left { left: -5px; transform: rotate(5deg); }
-.w-right { right: -5px; transform: rotate(-5deg); }
-
-.mouth { width: 16px; height: 8px; border-bottom: 2px solid var(--outline); border-radius: 50%; position: absolute; top: 58px; left: 39px; transition: all 0.3s; }
-.teeth { position: absolute; top: 68px; left: 43px; width: 8px; height: 6px; background: #fff; border: 1px solid #ccc; display: none; }
-
-/* --- MOODS --- */
-.mood-bored .eyelid { transform: scaleY(0.6); }
-.mood-bored .mouth { width: 8px; height: 2px; border: none; background: var(--outline); top: 62px; left: 43px; }
-.mood-bored .ear.left { transform: rotate(-20deg); } 
-.mood-bored .ear.right { transform: rotate(20deg); }
-
-.mood-sus .eye.left .eyelid { transform: scaleY(0.2); } 
-.mood-sus .eye.right .eyelid { transform: scaleY(0); }
-.mood-sus .mouth { width: 10px; height: 2px; border: none; background: var(--outline); transform: rotate(-10deg); top: 62px;}
-
-.mood-happy .eye { height: 12px; width: 12px; }
-.mood-happy .mouth { border-bottom: 3px solid var(--outline); height: 10px; width: 20px; left: 37px; }
-.mood-happy .teeth { display: block; }
-.mood-happy .ear { top: -50px; } 
-
-.mood-angry .eye { height: 4px; width: 12px; border-radius: 0; transform: rotate(20deg); background: var(--outline);}
-.mood-angry .eye.right { transform: rotate(-20deg); }
-.mood-angry .mouth { width: 14px; height: 6px; background: var(--outline); border-radius: 10px 10px 0 0; top: 62px; left: 40px;}
-.mood-angry .ear { transform: rotate(35deg); top: -40px; }
-
-/* --- SPEECH BUBBLE --- */
 .speech-bubble {
-    background: var(--outline);
-    color: #fff;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 700;
-    text-align: center;
-    position: relative;
-    min-height: 42px;
+    background: var(--outline); color: #fff;
+    padding: 10px 16px; border-radius: 12px;
+    font-size: 13px; font-weight: 800; text-align: center;
+    position: relative; min-height: 42px; width: 100%;
     display: flex; align-items: center; justify-content: center;
-    width: 100%;
     box-sizing: border-box;
     box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
 }
@@ -161,71 +81,128 @@ input:focus { outline: none; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); }
     border-width: 8px 8px 0; border-style: solid; border-color: var(--outline) transparent;
 }
 
-/* --- COUNTER --- */
-.streak-container { text-align: center; margin-top: 5px; }
-.streak-num { font-family: 'Fredoka One', cursive; font-size: 48px; line-height: 1; color: var(--text-color); }
-.streak-label { font-size: 12px; font-weight: 800; color: #95a5a6; letter-spacing: 1px; }
+/* --- THE BLOB ART --- */
+.stage {
+    width: 140px; height: 140px;
+    position: relative;
+    display: flex; justify-content: center; align-items: center;
+}
 
-/* --- BUTTONS --- */
+.blob-wrapper {
+    position: relative;
+    width: 120px; height: 120px;
+    display: flex; justify-content: center; align-items: center;
+}
+
+/* The Liquid Body */
+.blob {
+    width: 100px; height: 100px;
+    background: var(--blob-grey);
+    border: 3px solid var(--outline);
+    position: absolute;
+    /* This creates the liquid morph effect */
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    animation: morph 6s ease-in-out infinite;
+    transition: background 0.5s ease, width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Face Layout */
+.face {
+    position: absolute; z-index: 10;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; pointer-events: none;
+    transition: transform 0.2s ease;
+}
+
+.eyes { display: flex; gap: 14px; }
+.eye {
+    width: 12px; height: 12px;
+    background: var(--outline); border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.mouth {
+    width: 20px; height: 10px;
+    border-bottom: 3px solid var(--outline); border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.blush {
+    position: absolute; top: 18px; width: 50px; height: 10px;
+    background: transparent;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.blush::before, .blush::after {
+    content:''; position: absolute; width: 10px; height: 10px; background: #FF8A80; border-radius: 50%; opacity: 0.6;
+}
+.blush::before { left: 0; } .blush::after { right: 0; }
+
+/* --- MOOD STATES (Classes applied by JS) --- */
+
+/* Lvl 0: Grey, Bored */
+.mood-neutral { background: var(--blob-grey); }
+.mood-neutral .mouth { width: 10px; height: 4px; border: 3px solid var(--outline); border-radius: 4px; background: transparent; } /* Flat mouth */
+
+/* Lvl 1: Blue, Suspicious */
+.mood-sus { background: var(--blob-blue); }
+.mood-sus .eye { height: 4px; border-radius: 2px; } /* Squint */
+.mood-sus .mouth { transform: rotate(-10deg); width: 10px; height: 4px; border: 3px solid var(--outline); border-radius: 4px; }
+
+/* Lvl 2: Pink, Happy */
+.mood-happy { background: var(--blob-pink); }
+.mood-happy .eye { height: 14px; width: 14px; }
+.mood-happy .mouth { height: 12px; width: 24px; border-radius: 0 0 20px 20px; border: 3px solid var(--outline); border-top: none; background: #fff; }
+.mood-happy .blush { opacity: 1; }
+
+/* Lvl 3: Gold, Excited */
+.mood-gold { background: var(--blob-gold); box-shadow: 0 0 20px rgba(255, 213, 79, 0.6); }
+.mood-gold .eye { height: 16px; width: 16px; background: #fff; border: 3px solid var(--outline); } /* Wide eyes */
+.mood-gold .mouth { width: 30px; height: 20px; background: #333; border-radius: 0 0 30px 30px; border: none; }
+
+/* Broken: Sad */
+.mood-sad { background: var(--blob-sad); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; animation: none; height: 60px; width: 120px; margin-top: 40px; }
+.mood-sad .eye { transform: rotate(20deg); height: 4px; border-radius: 2px; }
+.mood-sad .mouth { border-bottom: none; border-top: 3px solid var(--outline); margin-top: 10px; }
+
+/* --- COUNTER & BUTTONS --- */
+.counter-box { text-align: center; }
+.num { font-family: 'Fredoka One', cursive; font-size: 48px; line-height: 1; color: var(--text); }
+.label { font-size: 12px; font-weight: 800; color: #95a5a6; letter-spacing: 1px; }
+
 .controls { width: 100%; display: flex; flex-direction: column; gap: 10px; }
 
 .btn-main {
-    width: 100%;
-    background: var(--btn-primary);
-    color: var(--outline);
-    border: 3px solid var(--outline);
-    border-radius: 12px;
-    padding: 14px;
-    font-family: 'Fredoka One', cursive;
-    font-size: 18px;
-    cursor: pointer;
-    box-shadow: 4px 4px 0 var(--outline);
+    width: 100%; background: var(--btn-pop); color: var(--outline);
+    border: 3px solid var(--outline); border-radius: 12px;
+    padding: 14px; font-family: 'Fredoka One', cursive; font-size: 18px;
+    cursor: pointer; box-shadow: 4px 4px 0 var(--outline);
     transition: transform 0.1s, box-shadow 0.1s;
 }
 .btn-main:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--outline); }
-.btn-main:disabled { background: #E0E0E0; color: #9E9E9E; box-shadow: none; transform: translate(4px,4px); border-color: #9E9E9E;}
 
 .btn-break {
-    width: 100%;
-    background: var(--btn-break);
-    color: #fff;
-    border: 3px solid var(--outline);
-    border-radius: 12px;
-    padding: 10px;
-    font-family: 'Fredoka One', cursive;
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 4px 4px 0 var(--outline);
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    width: 100%; background: var(--btn-danger); color: #fff;
+    border: 3px solid var(--outline); border-radius: 12px;
+    padding: 10px; font-family: 'Fredoka One', cursive; font-size: 14px;
+    cursor: pointer; box-shadow: 4px 4px 0 var(--outline);
 }
 .btn-break:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--outline); }
 
 /* --- ANIMATIONS --- */
-@keyframes jump-flip { 
-    0% { transform: scale(1) translateY(0) rotate(0); }
-    40% { transform: scale(0.9) translateY(10px); }
-    50% { transform: scale(1.2) translateY(-30px) rotate(180deg); }
-    100% { transform: scale(1) translateY(0) rotate(360deg); }
+@keyframes morph {
+    0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
 }
-.anim-flip { animation: jump-flip 0.6s ease; }
 
-@keyframes wiggle { 
-    0%, 100% { transform: rotate(0); }
-    25% { transform: rotate(-8deg); }
-    75% { transform: rotate(8deg); }
+/* Jumps */
+.anim-bounce { animation: jump 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes jump { 
+    0% { transform: scale(1) translateY(0); } 
+    50% { transform: scale(1.1) translateY(-20px); } 
+    100% { transform: scale(1) translateY(0); } 
 }
-.anim-wiggle { animation: wiggle 0.3s ease infinite; }
-
-@keyframes pop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
-}
-.anim-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
 .anim-shake { animation: shake 0.4s ease-in-out; }
-@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-
-.bounce { animation: bounce 0.4s ease; }
-@keyframes bounce { 50% { transform: scale(1.2); } }
-
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }

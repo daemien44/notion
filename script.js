@@ -103,3 +103,4 @@ function updateUI(justCheckedIn) {
         textEl.innerText = textOptions[rand];
     }
 }
+

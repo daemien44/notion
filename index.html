@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Judgemental Streak Bunny (Fixed)</title>
+    <title>Judgemental Streak Bunny</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
@@ -14,7 +14,7 @@
         <div id="setup-layer">
             <h2 class="setup-title">Track a Habit</h2>
             <div class="input-wrapper">
-                <input type="text" id="goal-input" placeholder="e.g. Read 10 Pages" maxlength="20">
+                <input type="text" id="goal-input" placeholder="e.g. Drink Water" maxlength="22">
             </div>
             <button class="btn-main" onclick="saveGoal()">START DEMO</button>
         </div>
@@ -23,7 +23,7 @@
             
             <div class="header">
                 <span id="display-goal">GOAL</span>
-                <span class="reset-link" onclick="resetAll()">RESET</span>
+                <span class="reset-link" onclick="fullReset()">RESET APP</span>
             </div>
 
             <div class="speech-bubble" id="roast-text">
@@ -72,4 +72,3 @@
 
 </body>
 </html>
-

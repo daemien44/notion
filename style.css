@@ -1,265 +1,121 @@
-/* --- NOTION CENTERING (I added this for you) --- */
+:root {
+    --bg-color: #FDF6E3; /* Cream background */
+    --card-bg: #FFFFFF;
+    --text-color: #2C3E50;
+    --cat-color: #95A5A6; /* Grey Cat */
+    --accent-color: #FFD93D; /* Yellow Button */
+    --shadow-color: #000000;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    /* This makes the background transparent so it blends with Notion */
-    background-color: transparent; 
-    font-family: sans-serif;
-    overflow: hidden; /* Prevents scrollbars */
+    background-color: transparent; /* Transparent for Notion */
+    font-family: 'Nunito', sans-serif;
+    color: var(--text-color);
+    user-select: none;
 }
 
-/* --- YOUR WIDGET CODE BELOW --- */
-
-/* From Uiverse.io by Pradeepsaranbishnoi */ 
-.credit {
-  position: fixed;
-  right: 2rem;
-  bottom: 2rem;
-  color: white;
+#widget {
+    width: 260px;
+    background: var(--card-bg);
+    border: 3px solid var(--shadow-color);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 8px 8px 0 var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    position: relative;
 }
 
-.credit a {
-  color: inherit;
+/* --- CAT CSS ART --- */
+.cat-stage {
+    width: 120px;
+    height: 100px;
+    position: relative;
+    margin-top: 10px;
 }
 
-/* Main Circle */
-.main-circle {
-  width: 40rem;
-  height: 40rem;
-  border-radius: 100%;
-  background: linear-gradient(40deg, #FF0080,#FF8C00 70%);
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  -webkit-transform: translate(-50%, -70%);
-  -ms-transform: translate(-50%, -70%);
-  transform: translate(-50%, -70%)
+.cat-head {
+    width: 100px; height: 90px;
+    background: var(--cat-color);
+    border: 3px solid var(--shadow-color);
+    border-radius: 50% 50% 40% 40%;
+    position: absolute; bottom: 0; left: 10px;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Phone */
-.phone {
-  position: relative;
-  z-index: 2;
-  width: 18rem;
-  height: 17rem;
-  background-color: inherit;
-  -webkit-box-shadow: 0 4px 35px rgba(0,0,0,.1);
-  box-shadow: 0 4px 35px rgba(0,0,0,.1);
-  border-radius: 40px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
+.ear {
+    width: 30px; height: 40px;
+    background: var(--cat-color);
+    border: 3px solid var(--shadow-color);
+    position: absolute; top: -15px;
+    z-index: 1;
+}
+.ear.left { left: 15px; border-radius: 10px 0 0 0; transform: rotate(-10deg); }
+.ear.right { right: 15px; border-radius: 0 10px 0 0; transform: rotate(10deg); }
+
+.eyes {
+    position: absolute; top: 35px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 20px;
+    display: flex; justify-content: space-between;
 }
 
-/* Top */
-.menu {
-  font-size: 80%;
-  opacity: .4;
-  padding: .8rem 1.8rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.eye {
+    width: 12px; height: 12px;
+    background: var(--shadow-color); border-radius: 50%;
+    position: relative; overflow: hidden;
+    transition: all 0.3s;
 }
 
-.icons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin-top: .5rem;
+.eyelid {
+    position: absolute; top: -5px; left: -2px;
+    width: 16px; height: 16px;
+    background: var(--cat-color);
+    transition: transform 0.3s;
+    transform-origin: top;
+    transform: scaleY(0); /* Open by default */
 }
 
-.battery {
-  width: .85rem;
-  height: .45rem;
-  background-color: black;
+.nose {
+    width: 8px; height: 6px; background: pink;
+    border-radius: 50%;
+    position: absolute; top: 55px; left: 46px;
 }
 
-.network {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 6.8px 7.2px 6.8px;
-  border-color: transparent transparent black transparent;
-  -webkit-transform: rotate(135deg);
-  -ms-transform: rotate(135deg);
-  transform: rotate(135deg);
-  margin: .12rem .5rem;
+.mouth {
+    width: 20px; height: 10px;
+    border-bottom: 2px solid var(--shadow-color);
+    border-radius: 50%;
+    position: absolute; top: 60px; left: 40px;
+    transition: all 0.3s;
 }
 
-/* Middle */
-.content {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  margin: auto;
-  text-align: center;
-  width: 70%;
-  -webkit-transform: translateY(5%);
-  -ms-transform: translateY(5%);
-  transform: translateY(5%);
-}
+/* --- MOODS --- */
+/* Bored */
+.mood-bored .eyelid { transform: scaleY(0.65); }
+.mood-bored .mouth { width: 10px; height: 2px; border: none; background: #000; top: 65px; left: 45px; }
 
-.circle {
-  position: relative;
-  border-radius: 100%;
-  width: 8rem;
-  height: 8rem;
-  background: linear-gradient(40deg, #FF0080,#FF8C00 70%);
-  margin: auto;
-}
+/* Suspicious (One eyebrow raised) */
+.mood-sus .eye.left .eyelid { transform: scaleY(0.2); } 
+.mood-sus .eye.right .eyelid { transform: scaleY(0); }
+.mood-sus .mouth { width: 12px; height: 2px; border: none; background: #000; transform: rotate(-10deg); top: 64px;}
 
-.crescent {
-  position: absolute;
-  border-radius: 100%;
-  right: 0;
-  width: 6rem;
-  height: 6rem;
-  background: white;
-  -webkit-transform: scale(0);
-  -ms-transform: scale(0);
-  transform: scale(0);
-  -webkit-transform-origin: top right;
-  -ms-transform-origin: top right;
-  transform-origin: top right;
-  -webkit-transition: -webkit-transform .6s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transition: -webkit-transform .6s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transition: transform .6s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transition: transform .6s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform .6s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
+/* Happy */
+.mood-happy .eye { height: 14px; width: 14px; }
+.mood-happy .mouth { border-bottom: 4px solid #000; height: 12px; width: 24px; left: 38px; }
 
-label, .toggle {
-  height: 2.8rem;
-  border-radius: 100px;
-}
+/* Angry (Broken Streak) */
+.mood-angry .eye { height: 4px; width: 15px; border-radius: 0; transform: rotate(20deg); }
+.mood-angry .eye.right { transform: rotate(-20deg); }
+.mood-angry .mouth { width: 16px; height: 8px; background: #000; border-radius: 10px 10px 0 0; top: 64px; left: 42px;}
 
-label {
-  width: 100%;
-  background-color: rgba(0,0,0,.1);
-  border-radius: 100px;
-  position: relative;
-  margin: 1.8rem 0 4rem 0;
-  cursor: pointer;
-}
-
-.toggle {
-  position: absolute;
-  width: 50%;
-  background-color: #fff;
-  -webkit-box-shadow: 0 2px 15px rgba(0,0,0,.15);
-  box-shadow: 0 2px 15px rgba(0,0,0,.15);
-  -webkit-transition: -webkit-transform .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition: -webkit-transform .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition: transform .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition: transform .3s cubic-bezier(0.25, 0.46, 0.45, 0.94), -webkit-transform .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.names {
-  font-size: 90%;
-  font-weight: bolder;
-  color: black;
-  width: 65%;
-  margin-left: 17.5%;
-  margin-top: 6.5%;
-  position: absolute;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.dark {
-  opacity: .5;
-}
-
-.mark {
-  border-radius: 100px;
-  background-color: black;
-}
-
-.time {
-  color: black;
-}
-/* -------- Switch Styles ------------*/
-[type="checkbox"] {
-  display: none;
-}
-/* Toggle */
-[type="checkbox"]:checked + .app .toggle {
-  -webkit-transform: translateX(100%);
-  -ms-transform: translateX(100%);
-  transform: translateX(100%);
-  background-color: #34323D;
-}
-
-[type="checkbox"]:checked + .app .dark {
-  opacity: 1;
-  color: white;
-}
-
-[type="checkbox"]:checked + .app .light {
-  opacity: 1;
-  color: white;
-}
-/* App */
-[type="checkbox"]:checked + .app .body {
-  background-color: #26242E;
-  color: white;
-}
-/* Circle */
-[type="checkbox"]:checked + .app .crescent {
-  -webkit-transform: scale(1);
-  -ms-transform: scale(1);
-  transform: scale(1);
-  background: #26242E;
-}
-
-[type="checkbox"]:checked + .app .circle {
-  background: linear-gradient(40deg, #8983F7, #A3DAFB 70%);
-}
-
-[type="checkbox"]:checked + .app .main-circle {
-  background: linear-gradient(40deg, #8983F7, #A3DAFB 70%);
-}
-
-[type="checkbox"]:checked + .time {
-  color: white;
-}
-
-[type="checkbox"]:checked + .app .body .phone .menu .time {
-  color: white;
-}
-
-[type="checkbox"]:checked + .app .body .phone .menu .icons .network {
-  border-color: transparent transparent white transparent;
-}
-
-[type="checkbox"]:checked + .app .body .phone .menu .icons .battery {
-  background-color: white;
-}
-
-[type="checkbox"]:checked + .app .body {
-  border-radius: 40px;
-}
+/* --- TEXT & UI --- */
+.speech-bubble {
+    background: var(--shadow-color);

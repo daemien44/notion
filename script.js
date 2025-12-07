@@ -1,29 +1,13 @@
-// --- CONFIGURATION ---
-const KEY_GOAL = 'bunny_final_goal';
-const KEY_STREAK = 'bunny_final_streak';
-const KEY_DATE = 'bunny_final_date';
+// --- CONFIG ---
+const KEY_GOAL = 'blob_goal';
+const KEY_STREAK = 'blob_streak';
 
-const TEXTS = {
-    start: [
-        "I'm listening...", "Hop to it.", "Don't make me wait.", 
-        "My ears are up.", "I'm watching you."
-    ],
-    low: [
-        "That's it?", "I've seen better hops.", "Barely trying.", 
-        "One day? Cute.", "Yawn."
-    ],
-    mid: [
-        "Not bad, human.", "Twitching with approval.", 
-        "Okay, I'm listening.", "Don't drop the carrot.", "Acceptable."
-    ],
-    high: [
-        "A M A Z I N G.", "I am your biggest fan.", "Bunny approved!", 
-        "Pure dedication.", "Legendary status."
-    ],
-    broken: [
-        "MY HEART IS BROKEN.", "Back to the burrow.", "Why did you stop?", 
-        "Disappointed.", "Back to zero. Sad."
-    ]
+const PHRASES = {
+    start: ["I am formless.", "Give me shape.", "Feed me streaks.", "Waiting..."],
+    low: ["I'm getting blue.", "Okay, not bad.", "More please.", "I feel a tingle."],
+    mid: ["I AM PINK NOW.", "Look at me glow.", "We are unstoppable.", "So squishy!"],
+    high: ["GOLDEN GOD.", "ASCENDED.", "PURE ENERGY.", "BOW BEFORE ME."],
+    broken: ["I melted.", "Back to puddle.", "Whyyyy.", "Sad blob sounds."]
 };
 
 // DOM
@@ -32,39 +16,16 @@ const activeLayer = document.getElementById('active-layer');
 const goalInput = document.getElementById('goal-input');
 const displayGoal = document.getElementById('display-goal');
 const streakEl = document.getElementById('streak-num');
-const textEl = document.getElementById('roast-text');
-const bunny = document.getElementById('bunny-face');
-const checkInBtn = document.getElementById('checkin-btn');
+const textEl = document.getElementById('blob-text');
+const blob = document.getElementById('the-blob');
+const wrapper = document.querySelector('.blob-wrapper');
 
 // STATE
 let goalName = localStorage.getItem(KEY_GOAL) || "";
 let streak = parseInt(localStorage.getItem(KEY_STREAK) || "0");
 
 // INIT
-init();
-
-function init() {
-    // 1. Check Date Logic (Real Persistence)
-    const lastDate = localStorage.getItem(KEY_DATE);
-    if (lastDate) {
-        const today = new Date().setHours(0,0,0,0);
-        const last = new Date(lastDate).setHours(0,0,0,0);
-        const diff = (today - last) / (1000 * 60 * 60 * 24);
-
-        if (diff === 0) {
-            // Already done today
-            checkInBtn.disabled = true;
-            checkInBtn.innerText = "DONE FOR TODAY";
-        } else if (diff > 1) {
-            // Missed a day
-            streak = 0;
-            localStorage.setItem(KEY_STREAK, 0);
-            updateUI(false, true); // Trigger angry state on load
-        }
-    }
-
-    if (goalName) showActiveLayer(); else showSetupLayer();
-}
+if (goalName) showActiveLayer(); else showSetupLayer();
 
 // --- FUNCTIONS ---
 
@@ -77,7 +38,7 @@ function showActiveLayer() {
     setupLayer.classList.add('hidden');
     activeLayer.classList.remove('hidden');
     displayGoal.innerText = goalName;
-    if (streak > 0 && !checkInBtn.disabled) updateUI(false); 
+    updateUI(false);
 }
 
 function saveGoal() {
@@ -89,84 +50,67 @@ function saveGoal() {
 }
 
 function checkIn() {
-    streak++;
-    const now = new Date();
+    streak++; // Demo mode: No date check, infinite clicking
     localStorage.setItem(KEY_STREAK, streak);
-    localStorage.setItem(KEY_DATE, now.toISOString());
 
-    // Disable button for today
-    checkInBtn.disabled = true;
-    checkInBtn.innerText = "DONE FOR TODAY";
-
-    // Random Animation
-    const animations = ['anim-flip', 'anim-pop', 'anim-wiggle'];
-    const randAnim = animations[Math.floor(Math.random() * animations.length)];
-    
-    bunny.classList.remove('anim-flip', 'anim-pop', 'anim-wiggle', 'anim-shake');
-    void bunny.offsetWidth; 
-    bunny.classList.add(randAnim);
-
-    // Bounce Counter
-    streakEl.classList.remove('bounce');
-    void streakEl.offsetWidth;
-    streakEl.classList.add('bounce');
+    // Animation
+    wrapper.classList.remove('anim-bounce', 'anim-shake');
+    void wrapper.offsetWidth; // Reflow
+    wrapper.classList.add('anim-bounce');
 
     updateUI(true);
 }
 
 function breakStreak() {
-    if(confirm("Are you sure? This will reset your streak to 0.")) {
-        streak = 0;
-        localStorage.setItem(KEY_STREAK, streak);
-        
-        // Reset button state so they can start over
-        checkInBtn.disabled = false;
-        checkInBtn.innerText = "I DID IT!";
-        
-        // Angry Shake
-        bunny.classList.remove('anim-flip', 'anim-pop', 'anim-wiggle', 'anim-shake');
-        void bunny.offsetWidth;
-        bunny.classList.add('anim-shake');
-        
-        updateUI(false, true);
-    }
+    streak = 0;
+    localStorage.setItem(KEY_STREAK, streak);
+    
+    // Animation
+    wrapper.classList.remove('anim-bounce', 'anim-shake');
+    void wrapper.offsetWidth;
+    wrapper.classList.add('anim-shake');
+    
+    updateUI(false, true); // Trigger sad state
 }
 
 function updateUI(isCheckIn, isBroken = false) {
     streakEl.innerText = streak;
 
-    let mood = "mood-bored";
-    let texts = TEXTS.start;
+    // Mood Logic
+    let moodClass = "mood-neutral";
+    let texts = PHRASES.start;
 
     if (isBroken) {
-        mood = "mood-angry";
-        texts = TEXTS.broken;
-    } else if (streak >= 10) {
-        mood = "mood-happy"; // or love
-        texts = TEXTS.high;
+        moodClass = "mood-sad";
+        texts = PHRASES.broken;
+    } else if (streak >= 15) {
+        moodClass = "mood-gold";
+        texts = PHRASES.high;
     } else if (streak >= 5) {
-        mood = "mood-happy";
-        texts = TEXTS.mid;
+        moodClass = "mood-happy"; // Pink
+        texts = PHRASES.mid;
     } else if (streak >= 1) {
-        mood = "mood-sus";
-        texts = TEXTS.low;
+        moodClass = "mood-sus"; // Blue
+        texts = PHRASES.low;
     } else {
-        mood = "mood-bored";
-        texts = TEXTS.start;
+        moodClass = "mood-neutral";
+        texts = PHRASES.start;
     }
 
-    bunny.className = "head " + mood;
+    // Apply Mood
+    blob.className = "blob " + moodClass;
 
+    // Update Text
     if (isCheckIn || isBroken || streak > 0) {
         const rand = Math.floor(Math.random() * texts.length);
         textEl.innerText = texts[rand];
     } else {
-         textEl.innerText = TEXTS.start[0];
+         textEl.innerText = PHRASES.start[0];
     }
 }
 
 function resetAll() {
-    if(confirm("Reset entire widget?")) {
+    if(confirm("Delete goal and reset?")) {
         localStorage.clear();
         location.reload();
     }
